@@ -74,12 +74,12 @@
         }
         table { width: 100%; border-collapse: collapse; text-align: left; }
         th { background: #16192b; color: #a855f7; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
-        th, td { padding: 16px 22px; }
+        th, td { padding: 12px 22px; vertical-align: middle; }
         tr { border-bottom: 1px solid #1f2438; }
         tr:last-child { border-bottom: none; }
         tr:hover { background: rgba(255, 255, 255, 0.015); }
 
-        /* Tier Badges */
+        /* Custom BZ Tier Badges */
         .tier-badge { 
             font-weight: 800; 
             padding: 5px 10px; 
@@ -102,8 +102,8 @@
         .ht5 { background: #8b5cf6; color: #fff; } 
         .lt5 { background: #4b5563; color: #fff; } 
 
-        .player-info { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #f3f4f6; }
-        .player-avatar { width: 28px; height: 28px; border-radius: 6px; background: #090a0f; border: 1px solid #1f2438; }
+        .player-info { display: flex; align-items: center; gap: 14px; font-weight: 600; color: #f3f4f6; }
+        .player-skin { height: 48px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
         .footer-action {
             display: flex;
@@ -146,6 +146,7 @@
         <p>Competitive Tier Rankings</p>
     </div>
 
+    <!-- Mode Select Bar -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchMode('sword', event)">Sword</button>
         <button class="tab-btn" onclick="switchMode('crystal', event)">Crystal</button>
@@ -158,6 +159,7 @@
         <button class="tab-btn" onclick="switchMode('mace', event)">Mace</button>
     </div>
 
+    <!-- Ranking Table -->
     <div class="table-card">
         <table>
             <thead>
@@ -307,7 +309,7 @@
                             <td>${p.rank}</td>
                             <td>
                                 <div class="player-info">
-                                    <img class="player-avatar" src="https://mc-heads.net/avatar/${p.name}/28" alt="${p.name}">
+                                    <img class="player-skin" src="https://visage.surgeplay.com/front/128/${p.name}" alt="${p.name}" onerror="this.src='https://visage.surgeplay.com/front/128/Steve'">
                                     ${p.name}
                                 </div>
                             </td>
