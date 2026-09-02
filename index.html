@@ -105,9 +105,16 @@
         .player-info { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #f3f4f6; }
         .player-avatar { width: 28px; height: 28px; border-radius: 6px; background: #090a0f; border: 1px solid #1f2438; }
 
+        .footer-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
         .btn-discord { 
             display: inline-block; 
-            margin-top: 30px; 
             background: linear-gradient(135deg, #5865f2 0%, #404feedb 100%); 
             color: #ffffff; 
             text-decoration: none; 
@@ -119,6 +126,17 @@
             transition: all 0.2s ease; 
         }
         .btn-discord:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(88, 101, 242, 0.5); }
+
+        .rules-notice {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .rules-notice span {
+            color: #a855f7;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +175,10 @@
         </table>
     </div>
 
-    <a href="YOUR_DISCORD_INVITE_LINK_HERE" class="btn-discord">Apply for Tier Testing</a>
+    <div class="footer-action">
+        <a href="https://gpro85814-hash.github.io/bz-tiers/" target="_blank" class="btn-discord">Apply for Tier Testing</a>
+        <p class="rules-notice">After Clicking The Button Make Sure To Read <span>#rules</span></p>
+    </div>
 
     <script>
         const rankingsData = {
