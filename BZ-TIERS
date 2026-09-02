@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BZ-TIERS | Official Competitive Rankings</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        body { 
+            background: #090a0f; 
+            color: #d1d5db; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 40px 15px; 
+            min-height: 100vh;
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { 
+            font-size: 2.8rem; 
+            color: #ffffff; 
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .header h1 span { 
+            color: #a855f7; 
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+        }
+        .header p { color: #6b7280; font-size: 0.95rem; margin-top: 6px; font-weight: 500; }
+        
+        /* Unique BZ-TIERS Navigation Bar */
+        .tabs { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            margin-bottom: 30px;
+            background: #11131f;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid #1f2438;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+        .tab-btn { 
+            background: transparent; 
+            border: 1px solid transparent; 
+            color: #9ca3af; 
+            padding: 9px 18px; 
+            font-weight: 700; 
+            font-size: 0.85rem;
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+        }
+        .tab-btn:hover { color: #ffffff; background: rgba(255,255,255,0.04); }
+        .tab-btn.active { 
+            background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%); 
+            color: #ffffff; 
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.35);
+        }
+
+        /* Leaderboard Container */
+        .table-card { 
+            background: #11131f; 
+            border-radius: 14px; 
+            width: 100%; 
+            max-width: 820px; 
+            overflow: hidden; 
+            border: 1px solid #1f2438; 
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7); 
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #16192b; color: #a855f7; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+        th, td { padding: 16px 22px; }
+        tr { border-bottom: 1px solid #1f2438; }
+        tr:last-child { border-bottom: none; }
+        tr:hover { background: rgba(255, 255, 255, 0.015); }
+
+        /* Custom BZ Tier Badges */
+        .tier-badge { 
+            font-weight: 800; 
+            padding: 5px 10px; 
+            border-radius: 6px; 
+            display: inline-block; 
+            font-size: 0.75rem; 
+            width: 46px; 
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        
+        .ht1 { background: #ff3355; color: #fff; } 
+        .lt1 { background: #ff6633; color: #fff; } 
+        .ht2 { background: #ffaa00; color: #fff; } 
+        .lt2 { background: #ffd000; color: #000; } 
+        .ht3 { background: #10b981; color: #fff; } 
+        .lt3 { background: #059669; color: #fff; } 
+        .ht4 { background: #06b6d4; color: #fff; } 
+        .lt4 { background: #3b82f6; color: #fff; } 
+        .ht5 { background: #8b5cf6; color: #fff; } 
+        .lt5 { background: #4b5563; color: #fff; } 
+
+        .player-info { display: flex; align-items: center; gap: 12px; font-weight: 600; color: #f3f4f6; }
+        .player-avatar { width: 28px; height: 28px; border-radius: 6px; background: #090a0f; border: 1px solid #1f2438; }
+
+        .btn-discord { 
+            display: inline-block; 
+            margin-top: 30px; 
+            background: linear-gradient(135deg, #5865f2 0%, #404feedb 100%); 
+            color: #ffffff; 
+            text-decoration: none; 
+            padding: 14px 32px; 
+            border-radius: 10px; 
+            font-weight: 700; 
+            font-size: 0.95rem;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.35);
+            transition: all 0.2s ease; 
+        }
+        .btn-discord:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(88, 101, 242, 0.5); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>BZ-<span>TIERS</span></h1>
+        <p>Competitive Tier Rankings</p>
+    </div>
+
+    <!-- Mode Select Bar -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchMode('sword', event)">Sword</button>
+        <button class="tab-btn" onclick="switchMode('crystal', event)">Crystal</button>
+        <button class="tab-btn" onclick="switchMode('axe', event)">Axe</button>
+        <button class="tab-btn" onclick="switchMode('nethop', event)">NethOP</button>
+        <button class="tab-btn" onclick="switchMode('pot', event)">Pot</button>
+        <button class="tab-btn" onclick="switchMode('smp', event)">SMP</button>
+        <button class="tab-btn" onclick="switchMode('uhc', event)">UHC</button>
+        <button class="tab-btn" onclick="switchMode('vanilla', event)">Vanilla</button>
+        <button class="tab-btn" onclick="switchMode('mace', event)">Mace</button>
+    </div>
+
+    <!-- Ranking Table -->
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Tier</th>
+                    <th>Region</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-list">
+            </tbody>
+        </table>
+    </div>
+
+    <a href="YOUR_DISCORD_INVITE_LINK_HERE" class="btn-discord">Apply for Tier Testing</a>
+
+    <script>
+        const rankingsData = {
+            sword: [
+                { rank: "#1", name: "PlayerOne", tier: "HT1", tierClass: "ht1", region: "EU" },
+                { rank: "#2", name: "ViperPvP", tier: "LT1", tierClass: "lt1", region: "NA" },
+                { rank: "#3", name: "ComboGod", tier: "HT2", tierClass: "ht2", region: "EU" },
+                { rank: "#4", name: "ShadowPvP", tier: "LT2", tierClass: "lt2", region: "AS" },
+                { rank: "#5", name: "GreenGod", tier: "HT3", tierClass: "ht3", region: "NA" },
+                { rank: "#6", name: "AxeMain", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#7", name: "BluePvP", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#8", name: "DeepBlue", tier: "LT4", tierClass: "lt4", region: "NA" },
+                { rank: "#9", name: "PurpleDemon", tier: "HT5", tierClass: "ht5", region: "EU" },
+                { rank: "#10", name: "StarterPvP", tier: "LT5", tierClass: "lt5", region: "NA" }
+            ],
+            crystal: [
+                { rank: "#1", name: "CrystalKing", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#2", name: "ObbyPlacer", tier: "LT1", tierClass: "lt1", region: "EU" },
+                { rank: "#3", name: "BoomPvP", tier: "HT2", tierClass: "ht2", region: "NA" },
+                { rank: "#4", name: "AnchorGod", tier: "LT2", tierClass: "lt2", region: "AS" },
+                { rank: "#5", name: "PopMaster", tier: "HT3", tierClass: "ht3", region: "EU" },
+                { rank: "#6", name: "TotemUser", tier: "LT3", tierClass: "lt3", region: "NA" },
+                { rank: "#7", name: "CrystalLearner", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#8", name: "FastRefill", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#9", name: "GlowstonePro", tier: "HT5", tierClass: "ht5", region: "NA" },
+                { rank: "#10", name: "NewCrystaller", tier: "LT5", tierClass: "lt5", region: "EU" }
+            ],
+            axe: [
+                { rank: "#1", name: "ShieldBreaker", tier: "HT1", tierClass: "ht1", region: "EU" },
+                { rank: "#2", name: "AxeGod", tier: "LT1", tierClass: "lt1", region: "NA" },
+                { rank: "#3", name: "StunMain", tier: "HT2", tierClass: "ht2", region: "EU" },
+                { rank: "#4", name: "CritHitter", tier: "LT2", tierClass: "lt2", region: "AS" },
+                { rank: "#5", name: "WoodCutter", tier: "HT3", tierClass: "ht3", region: "NA" },
+                { rank: "#6", name: "ShieldUser", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#7", name: "HeavyPvP", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#8", name: "AxeNewbie", tier: "LT4", tierClass: "lt4", region: "NA" },
+                { rank: "#9", name: "SlowStriker", tier: "HT5", tierClass: "ht5", region: "EU" },
+                { rank: "#10", name: "CasualAxe", tier: "LT5", tierClass: "lt5", region: "NA" }
+            ],
+            nethop: [
+                { rank: "#1", name: "NethGod", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#2", name: "OpPvp", tier: "LT1", tierClass: "lt1", region: "EU" },
+                { rank: "#3", name: "PotMaster", tier: "HT2", tierClass: "ht2", region: "AS" },
+                { rank: "#4", name: "TankUser", tier: "LT2", tierClass: "lt2", region: "NA" },
+                { rank: "#5", name: "CustomKit", tier: "HT3", tierClass: "ht3", region: "EU" },
+                { rank: "#6", name: "OpRefill", tier: "LT3", tierClass: "lt3", region: "SA" },
+                { rank: "#7", name: "HeavyNeth", tier: "HT4", tierClass: "ht4", region: "NA" },
+                { rank: "#8", name: "ArmorBreak", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#9", name: "CasualNeth", tier: "HT5", tierClass: "ht5", region: "NA" },
+                { rank: "#10", name: "NewNeth", tier: "LT5", tierClass: "lt5", region: "AS" }
+            ],
+            pot: [
+                { rank: "#1", name: "NodebuffPro", tier: "HT1", tierClass: "ht1", region: "EU" },
+                { rank: "#2", name: "SpeedTwo", tier: "LT1", tierClass: "lt1", region: "NA" },
+                { rank: "#3", name: "SplashHeal", tier: "HT2", tierClass: "ht2", region: "EU" },
+                { rank: "#4", name: "PearlClutch", tier: "LT2", tierClass: "lt2", region: "NA" },
+                { rank: "#5", name: "DebuffMain", tier: "HT3", tierClass: "ht3", region: "AS" },
+                { rank: "#6", name: "PotSpammer", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#7", name: "RefillGod", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#8", name: "SlowHeal", tier: "LT4", tierClass: "lt4", region: "NA" },
+                { rank: "#9", name: "PotLearner", tier: "HT5", tierClass: "ht5", region: "EU" },
+                { rank: "#10", name: "NoSpeed", tier: "LT5", tierClass: "lt5", region: "NA" }
+            ],
+            smp: [
+                { rank: "#1", name: "SmpKing", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#2", name: "TotemSpammer", tier: "LT1", tierClass: "lt1", region: "EU" },
+                { rank: "#3", name: "EnderPearl", tier: "HT2", tierClass: "ht2", region: "AS" },
+                { rank: "#4", name: "WebPlacer", tier: "LT2", tierClass: "lt2", region: "NA" },
+                { rank: "#5", name: "TrapMaster", tier: "HT3", tierClass: "ht3", region: "EU" },
+                { rank: "#6", name: "SmpFighter", tier: "LT3", tierClass: "lt3", region: "SA" },
+                { rank: "#7", name: "SurvivalPvP", tier: "HT4", tierClass: "ht4", region: "NA" },
+                { rank: "#8", name: "BaseRaider", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#9", name: "CasualSmp", tier: "HT5", tierClass: "ht5", region: "NA" },
+                { rank: "#10", name: "NewSmp", tier: "LT5", tierClass: "lt5", region: "AS" }
+            ],
+            uhc: [
+                { rank: "#1", name: "GoldenApple", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#2", name: "RodGod", tier: "LT1", tierClass: "lt1", region: "EU" },
+                { rank: "#3", name: "GapplePvP", tier: "HT2", tierClass: "ht2", region: "EU" },
+                { rank: "#4", name: "BowSpammer", tier: "LT2", tierClass: "lt2", region: "NA" },
+                { rank: "#5", name: "LavaUser", tier: "HT3", tierClass: "ht3", region: "AS" },
+                { rank: "#6", name: "WaterBucket", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#7", name: "HeadEater", tier: "HT4", tierClass: "ht4", region: "NA" },
+                { rank: "#8", name: "IronArmor", tier: "LT4", tierClass: "lt4", region: "SA" },
+                { rank: "#9", name: "RunnerPvP", tier: "HT5", tierClass: "ht5", region: "EU" },
+                { rank: "#10", name: "NoRod", tier: "LT5", tierClass: "lt5", region: "NA" }
+            ],
+            vanilla: [
+                { rank: "#1", name: "VanillaGod", tier: "HT1", tierClass: "ht1", region: "EU" },
+                { rank: "#2", name: "DefaultPvP", tier: "LT1", tierClass: "lt1", region: "NA" },
+                { rank: "#3", name: "NoMods", tier: "HT2", tierClass: "ht2", region: "AS" },
+                { rank: "#4", name: "VanillaPro", tier: "LT2", tierClass: "lt2", region: "EU" },
+                { rank: "#5", name: "PurePvP", tier: "HT3", tierClass: "ht3", region: "NA" },
+                { rank: "#6", name: "CleanFighter", tier: "LT3", tierClass: "lt3", region: "SA" },
+                { rank: "#7", name: "BasicKit", tier: "HT4", tierClass: "ht4", region: "EU" },
+                { rank: "#8", name: "VanillaLearner", tier: "LT4", tierClass: "lt4", region: "NA" },
+                { rank: "#9", name: "CasualVanilla", tier: "HT5", tierClass: "ht5", region: "EU" },
+                { rank: "#10", name: "NewVanilla", tier: "LT5", tierClass: "lt5", region: "NA" }
+            ],
+            mace: [
+                { rank: "#1", name: "SmashGod", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#2", name: "HeavySmash", tier: "LT1", tierClass: "lt1", region: "EU" },
+                { rank: "#3", name: "WindCharge", tier: "HT2", tierClass: "ht2", region: "AS" },
+                { rank: "#4", name: "BreachMaster", tier: "LT2", tierClass: "lt2", region: "NA" },
+                { rank: "#5", name: "MaceStriker", tier: "HT3", tierClass: "ht3", region: "EU" },
+                { rank: "#6", name: "MacePvP", tier: "LT3", tierClass: "lt3", region: "SA" },
+                { rank: "#7", name: "DropSmasher", tier: "HT4", tierClass: "ht4", region: "NA" },
+                { rank: "#8", name: "MaceNewbie", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#9", name: "CasualMace", tier: "HT5", tierClass: "ht5", region: "NA" },
+                { rank: "#10", name: "NewMacer", tier: "LT5", tierClass: "lt5", region: "AS" }
+            ]
+        };
+
+        function switchMode(mode, e) {
+            if (e) {
+                const buttons = document.querySelectorAll('.tab-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+            }
+
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+
+            if (rankingsData[mode]) {
+                rankingsData[mode].forEach(p => {
+                    list.innerHTML += `
+                        <tr>
+                            <td>${p.rank}</td>
+                            <td>
+                                <div class="player-info">
+                                    <img class="player-avatar" src="https://mc-heads.net/avatar/${p.name}/28" alt="${p.name}">
+                                    ${p.name}
+                                </div>
+                            </td>
+                            <td><span class="tier-badge ${p.tierClass}">${p.tier}</span></td>
+                            <td>${p.region}</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        switchMode('sword');
+    </script>
+</body>
+</html>
