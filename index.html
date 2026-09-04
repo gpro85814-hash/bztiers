@@ -278,122 +278,100 @@
 
     <script>
         // MCTiers Point values per tier
-        const pointValues = {
+        const tierPoints = {
             "HT1": 100, "LT1": 80,
             "HT2": 60,  "LT2": 50,
-            "HT3": 40,  "LT3": 30,
+            "HT3": 40,  "LT3": 30, "MD3": 35,
             "HT4": 20,  "LT4": 15,
             "HT5": 10,  "LT5": 5
-        };
+        };"
 
-        const rankingsData = {
-            sword: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "NA" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
-                { rank: "#7", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
-            ],
-            crystal: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" }, { rank: "#6", name: "Jollo_YOLO", tier: "LT3", tierClass: "lt3", region: "NA" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "NA" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
-                { rank: "#6", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "SA" },  { rank: "#8", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "EU" }
-                { rank: "#8", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "NA" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "EU" }
-            ],
-            axe: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "NA" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "SA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
-            ],
-            nethop: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "NA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "EU" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "NA" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "AS" }
-            ],
-            pot: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "AS" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "SA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
-            ],
-            smp: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" }, { rank: "#6", name: "wemmbuwasnthere", tier: "MD3", tierClass: "MD3", region: "EU" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "NA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "EU" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "NA" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "AS" }
-            ],
-            uhc: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "AS" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
-                { rank: "#7", name: "wemmbuwasnthere", tier: "HT43", tierClass: "ht4", region: "EU" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "SA" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
-            ],
-            vanilla: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "EU" },
-                { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "NA" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "EU" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
-                { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
-            ],
-            mace: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
-                { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
-                { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
-                { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
-                { rank: "#5", name: "wemmbuwasnthere", tier: "HT3", tierClass: "ht3", region: "EU" },
-                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" },
-                { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "NA" },
-                { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "EU" },
-                { rank: "#9", name: "Jollo_Yollo", tier: "HT5", tierClass: "ht5", region: "NA" },
-                { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "AS" }
+         const rankingsData = {
+    sword: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "NA" },
+        { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
+        { rank: "#7", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
+        { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
+    ],
+    crystal: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "NA" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
+        { rank: "#6", name: "Jollo_YoLo", tier: "LT3", tierClass: "lt3", region: "EU" },
+        { rank: "#7", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
+        { rank: "#8", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
+        { rank: "#9", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "EU" }
+    ],
+    axe: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "EU" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "AS" },
+        { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
+        { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "SA" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
+        { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
+    ],
+    smp: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
+        { rank: "#6", name: "wemmbuwasnthere", tier: "MD3", tierClass: "md3", region: "SA" },
+        { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "NA" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "EU" },
+        { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "NA" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "AS" }
+    ],
+    uhc: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "EU" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "AS" },
+        { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
+        { rank: "#7", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "EU" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "SA" },
+        { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
+    ],
+    vanilla: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "NA" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "EU" },
+        { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "NA" },
+        { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" },
+        { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "EU" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "NA" },
+        { rank: "#9", name: "Nobody", tier: "HT5", tierClass: "ht5", region: "EU" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
+    ],
+    mace: [
+        { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+        { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
+        { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "AS" },
+        { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "NA" },
+        { rank: "#5", name: "wemmbuwasnthere", tier: "HT3", tierClass: "ht3", region: "EU" },
+        { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "SA" },
+        { rank: "#7", name: "Nobody", tier: "HT4", tierClass: "ht4", region: "NA" },
+        { rank: "#8", name: "Nobody", tier: "LT4", tierClass: "lt4", region: "EU" },
+        { rank: "#9", name: "Jollo_YoLo", tier: "HT5", tierClass: "ht5", region: "NA" },
+        { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "AS" }
+    ]
+};
             ]
         };
 
@@ -457,7 +435,7 @@
                 foundPlayerName = query;
             }
 
-            // Title rank calculation based on total accumulated points
+        // Title rank calculation based on total accumulated points
             let titleRank = "Combat Candidate";
             if (totalPoints >= 400) titleRank = "Combat Grandmaster";
             else if (totalPoints >= 250) titleRank = "Combat Master";
