@@ -331,7 +331,20 @@
     </div>
 
     <script>
-        const steveSkinHead = "https://mc-heads.net/avatar/MHF_Steve/64";
+        // MCTiers top players list used for cracked/offline account skin fallbacks
+        const mcTiersProSkins = [
+            "Marlowww", "Coldified", "Swight", "ItzRealMe", 
+            "janekv", "ClownPierce", "Kylaz", "Arsakha", 
+            "Sfxm", "NearlyCombo", "oguzly", "Error454"
+        ];
+
+        function getMCTiersSkin(name) {
+            let charCodeSum = 0;
+            for (let i = 0; i < name.length; i++) {
+                charCodeSum += name.charCodeAt(i);
+            }
+            return mcTiersProSkins[charCodeSum % mcTiersProSkins.length];
+        }
 
         const tierPoints = {
             "HT1": 100, "LT1": 80,
@@ -428,6 +441,12 @@
             ]
         };
 
+        function handleSkinError(imgElement, playerName) {
+            const fallbackSkin = getMCTiersSkin(playerName);
+            imgElement.onerror = null;
+            imgElement.src = `https://mc-heads.net/avatar/${fallbackSkin}/64`;
+        }
+
         function switchMode(mode, btn) {
             if (btn) {
                 const buttons = document.querySelectorAll('.tab-btn');
@@ -442,15 +461,15 @@
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
                     
-                    const skinUrl = player.name === "Nobody" 
-                        ? steveSkinHead 
-                        : `https://mc-heads.net/avatar/${player.name}/32`;
+                    // Assign random MCTiers skin to placeholder "Nobody" slots
+                    const targetName = player.name === "Nobody" ? getMCTiersSkin(player.rank + mode) : player.name;
+                    const skinUrl = `https://mc-heads.net/avatar/${targetName}/32`;
 
                     row.innerHTML = `
                         <td>${player.rank}</td>
                         <td onclick="openProfile('${player.name}')">
                             <div class="player-cell">
-                                <img class="player-head-img" src="${skinUrl}" onerror="this.onerror=null;this.src='${steveSkinHead}';" alt="${player.name}">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${targetName}')" alt="${player.name}">
                                 <span>${player.name}</span>
                             </div>
                         </td>
@@ -508,7 +527,7 @@
             document.getElementById('profile-region').innerText = foundRegion;
 
             const modalImg = document.getElementById('profile-skin-img');
-            modalImg.onerror = function() { this.src = steveSkinHead; };
+            modalImg.onerror = function() { handleSkinError(this, foundPlayerName); };
             modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
 
             const grid = document.getElementById('profile-tiers-grid');
