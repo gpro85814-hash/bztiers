@@ -143,6 +143,22 @@
             border-bottom: none;
         }
 
+        .player-cell {
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-head-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background-color: #000;
+            object-fit: contain;
+        }
+
         .tier-badge {
             padding: 4px 8px;
             border-radius: 4px;
@@ -195,7 +211,6 @@
             color: var(--accent-purple);
         }
 
-        /* Profile Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -316,7 +331,17 @@
     </div>
 
     <script>
-        // MCTiers Point values per tier
+        // Array of iconic pro player IGNs assigned randomly to cracked players as skin fallbacks
+        const proSkins = ["Technoblade", "Marcel", "TapL", "Speeds", "Dante", "Bipolair", "Stimpy", "Huahwi"];
+
+        function getProSkin(name) {
+            let charCodeSum = 0;
+            for (let i = 0; i < name.length; i++) {
+                charCodeSum += name.charCodeAt(i);
+            }
+            return proSkins[charCodeSum % proSkins.length];
+        }
+
         const tierPoints = {
             "HT1": 100, "LT1": 80,
             "HT2": 60,  "LT2": 50,
@@ -339,12 +364,12 @@
                 { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
             ],
             crystal: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" },
+                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" }, { rank: "#9", name: "JOLLO_YOLLO", tier: "LT4", tierClass: "lt4", region: "AS" },
                 { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
                 { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "NA" },
                 { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
                 { rank: "#5", name: "Nobody", tier: "HT3", tierClass: "ht3", region: "EU" },
-                { rank: "#6", name: "Jollo_YoLo", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#6", name: "Nobody", tier: "LT3", tierClass: "lt3", region: "EU" },
                 { rank: "#7", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
                 { rank: "#8", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
                 { rank: "#9", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
@@ -412,6 +437,12 @@
             ]
         };
 
+        function handleSkinError(imgElement, playerName) {
+            const fallbackPro = getProSkin(playerName);
+            imgElement.onerror = null; // Prevent infinite loop
+            imgElement.src = `https://mc-heads.net/avatar/${fallbackPro}/64`;
+        }
+
         function switchMode(mode, btn) {
             if (btn) {
                 const buttons = document.querySelectorAll('.tab-btn');
@@ -425,9 +456,18 @@
             if (rankingsData[mode]) {
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
+                    const skinUrl = player.name === "Nobody" 
+                        ? "https://mc-heads.net/avatar/MHF_Steve/32" 
+                        : `https://mc-heads.net/avatar/${player.name}/32`;
+
                     row.innerHTML = `
                         <td>${player.rank}</td>
-                        <td style="font-weight: bold; cursor: pointer;" onclick="openProfile('${player.name}')">${player.name}</td>
+                        <td onclick="openProfile('${player.name}')">
+                            <div class="player-cell">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${player.name}')" alt="${player.name}">
+                                <span>${player.name}</span>
+                            </div>
+                        </td>
                         <td><span class="tier-badge ${player.tierClass}">${player.tier}</span></td>
                         <td>${player.region}</td>
                     `;
@@ -470,19 +510,20 @@
                 foundPlayerName = playerName;
             }
 
-            // Title rank calculation based on total accumulated points
             let titleRank = "Combat Candidate";
             if (totalPoints >= 400) titleRank = "Combat Grandmaster";
             else if (totalPoints >= 250) titleRank = "Combat Master";
             else if (totalPoints >= 120) titleRank = "Combat Ace";
             else if (totalPoints >= 50) titleRank = "Combat Specialist";
 
-            // Populate profile
             document.getElementById('profile-name').innerText = foundPlayerName;
             document.getElementById('profile-title').innerText = titleRank;
             document.getElementById('profile-points').innerText = totalPoints;
             document.getElementById('profile-region').innerText = foundRegion;
-            document.getElementById('profile-skin-img').src = `https://visage.surgeplay.com/front/128/${foundPlayerName}`;
+
+            const modalImg = document.getElementById('profile-skin-img');
+            modalImg.onerror = function() { handleSkinError(this, foundPlayerName); };
+            modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
 
             const grid = document.getElementById('profile-tiers-grid');
             grid.innerHTML = '';
@@ -502,7 +543,6 @@
             document.getElementById('profile-modal').style.display = 'none';
         }
 
-        // Initialize default view
         switchMode('sword');
     </script>
 </body>
