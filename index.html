@@ -155,7 +155,7 @@
             width: 28px;
             height: 28px;
             border-radius: 6px;
-            background-color: #000;
+            background-color: #202225;
             object-fit: contain;
         }
 
@@ -330,17 +330,7 @@
     </div>
 
     <script>
-        const fallbackSkins = [
-            "wemmbuwasnthere", "Jollo_YoLo", "Lt2Rabzyberries", "SLYD_XD", "blitzqi"
-        ];
-
-        function getFallbackSkin(name) {
-            let charCodeSum = 0;
-            for (let i = 0; i < name.length; i++) {
-                charCodeSum += name.charCodeAt(i);
-            }
-            return fallbackSkins[charCodeSum % fallbackSkins.length];
-        }
+        const fallbackSteveImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAADFJREFUOE9jZKAQMFKon2HUAIIRB3/8+PGfAUMYm4sGBgY4f4B4A8E0Ch4S44sBD2A4AwACfxwR8m2E1wAAAABJRU5ErkJggg==";
 
         const tierPoints = {
             "HT1": 100, "LT1": 80,
@@ -392,10 +382,9 @@
             ]
         };
 
-        function handleSkinError(imgElement, playerName) {
-            const fallbackSkin = getFallbackSkin(playerName);
+        function handleSkinError(imgElement) {
             imgElement.onerror = null;
-            imgElement.src = `https://mc-heads.net/avatar/${fallbackSkin}/64`;
+            imgElement.src = fallbackSteveImg;
         }
 
         function switchMode(mode, btn) {
@@ -406,20 +395,23 @@
             }
 
             const list = document.getElementById('ranking-list');
+            if (!list) return;
+            
             list.innerHTML = '';
 
             if (rankingsData[mode]) {
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
                     
-                    const targetName = player.name === "Nobody" ? getFallbackSkin(player.rank + mode) : player.name;
-                    const skinUrl = `https://mc-heads.net/avatar/${targetName}/32`;
+                    const skinUrl = player.name === "Nobody" 
+                        ? fallbackSteveImg 
+                        : `https://mc-heads.net/avatar/${player.name}/32`;
 
                     row.innerHTML = `
                         <td>${player.rank}</td>
                         <td onclick="openProfile('${player.name}')">
                             <div class="player-cell">
-                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${targetName}')" alt="${player.name}">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this)" alt="${player.name}">
                                 <span>${player.name}</span>
                             </div>
                         </td>
@@ -477,7 +469,7 @@
             document.getElementById('profile-region').innerText = foundRegion;
 
             const modalImg = document.getElementById('profile-skin-img');
-            modalImg.onerror = function() { handleSkinError(this, foundPlayerName); };
+            modalImg.onerror = function() { handleSkinError(this); };
             modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
 
             const grid = document.getElementById('profile-tiers-grid');
@@ -491,4 +483,16 @@
                 `;
             });
 
-            document.getElementById
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMode('sword');
+        });
+    </script>
+</body>
+</html>
