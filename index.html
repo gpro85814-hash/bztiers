@@ -331,20 +331,7 @@
     </div>
 
     <script>
-        // MCTiers top players list used for cracked/offline account skin fallbacks
-        const mcTiersProSkins = [
-            "Marlowww", "Coldified", "Swight", "ItzRealMe", 
-            "janekv", "ClownPierce", "Kylaz", "Arsakha", 
-            "Sfxm", "NearlyCombo", "oguzly", "Error454"
-        ];
-
-        function getMCTiersSkin(name) {
-            let charCodeSum = 0;
-            for (let i = 0; i < name.length; i++) {
-                charCodeSum += name.charCodeAt(i);
-            }
-            return mcTiersProSkins[charCodeSum % mcTiersProSkins.length];
-        }
+        const steveSkinHead = "https://mc-heads.net/avatar/MHF_Steve/64";
 
         const tierPoints = {
             "HT1": 100, "LT1": 80,
@@ -368,7 +355,7 @@
                 { rank: "#10", name: "Nobody", tier: "LT5", tierClass: "lt5", region: "NA" }
             ],
             crystal: [
-                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" }, { rank: "#6", name: "Jollo_yollo", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#1", name: "Nobody", tier: "HT1", tierClass: "ht1", region: "NA" }, { rank: "#9", name: "Jollo_YoLo", tier: "LT4", tierClass: "lt4", region: "AS" },
                 { rank: "#2", name: "Nobody", tier: "LT1", tierClass: "lt1", region: "EU" },
                 { rank: "#3", name: "Nobody", tier: "HT2", tierClass: "ht2", region: "NA" },
                 { rank: "#4", name: "Nobody", tier: "LT2", tierClass: "lt2", region: "AS" },
@@ -441,12 +428,6 @@
             ]
         };
 
-        function handleSkinError(imgElement, playerName) {
-            const fallbackSkin = getMCTiersSkin(playerName);
-            imgElement.onerror = null;
-            imgElement.src = `https://mc-heads.net/avatar/${fallbackSkin}/64`;
-        }
-
         function switchMode(mode, btn) {
             if (btn) {
                 const buttons = document.querySelectorAll('.tab-btn');
@@ -461,15 +442,15 @@
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
                     
-                    // Assign random MCTiers skin to placeholder "Nobody" slots
-                    const targetName = player.name === "Nobody" ? getMCTiersSkin(player.rank + mode) : player.name;
-                    const skinUrl = `https://mc-heads.net/avatar/${targetName}/32`;
+                    const skinUrl = player.name === "Nobody" 
+                        ? steveSkinHead 
+                        : `https://mc-heads.net/avatar/${player.name}/32`;
 
                     row.innerHTML = `
                         <td>${player.rank}</td>
                         <td onclick="openProfile('${player.name}')">
                             <div class="player-cell">
-                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${targetName}')" alt="${player.name}">
+                                <img class="player-head-img" src="${skinUrl}" onerror="this.onerror=null;this.src='${steveSkinHead}';" alt="${player.name}">
                                 <span>${player.name}</span>
                             </div>
                         </td>
@@ -527,7 +508,7 @@
             document.getElementById('profile-region').innerText = foundRegion;
 
             const modalImg = document.getElementById('profile-skin-img');
-            modalImg.onerror = function() { handleSkinError(this, foundPlayerName); };
+            modalImg.onerror = function() { this.src = steveSkinHead; };
             modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
 
             const grid = document.getElementById('profile-tiers-grid');
