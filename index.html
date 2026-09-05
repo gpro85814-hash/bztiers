@@ -332,20 +332,20 @@
     </div>
 
     <script>
-        // MCTiers Top Crystal Tier Players for Cool Skins
+        // MCTiers Crystal Tier skins pool
         const crystalMCTiersSkins = [
             "Aydrea", "Tenkiuu", "7Angels_", "69Crispy__", 
             "Cotoletta38_", "S1nsx", "VetolzHQ", "NoLifeGabbo",
             "heykALUX", "fwrtuna", "Pqranoiahh", "rips03"
         ];
 
-        // Explicit skin assignments for custom/cracked names
+        // Mappings for cracked or specific custom names
         const crystalCustomSkins = {
             "wemmbuwasnthere": "Aydrea",
             "Jollo_YoLo": "Tenkiuu",
             "Lt2Rabzyberries": "7Angels_",
             "SLYD_XD": "69Crispy__",
-            "blitzqi": "VetolzHQ"
+            "blitzqi": "K1RBE" // Set blitzqi to K1RBE skin
         };
 
         function getCrystalSkinName(playerName, seedKey) {
@@ -380,11 +380,11 @@
                 { rank: "#5", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
             ],
             crystal: [
-                { rank: "#1", name: "Jollo_YoLo", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#4", name: "Jollo_YoLo", tier: "LT4", tierClass: "lt4", region: "EU" },
                 { rank: "#2", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
                 { rank: "#3", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
                 { rank: "#4", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
-                { rank: "#5", name: "blitzqi", tier: "HT5", tierClass: "ht5", region: "EU" }
+                { rank: "#1", name: "blitzqi", tier: "HT3", tierClass: "ht3", region: "EU" }
             ],
             axe: [
                 { rank: "#1", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
@@ -417,9 +417,20 @@
             return `https://mc-heads.net/avatar/${skinTarget}/${size}`;
         }
 
+        // Multi-level fallback mechanism so skins never render broken
         function handleSkinError(imgElement, skinTarget, size) {
-            imgElement.onerror = null;
-            imgElement.src = `https://minotar.net/helm/${skinTarget}/${size}`;
+            const step = parseInt(imgElement.dataset.failStep || "0");
+            
+            if (step === 0) {
+                imgElement.dataset.failStep = "1";
+                imgElement.src = `https://minotar.net/helm/${skinTarget}/${size}`;
+            } else if (step === 1) {
+                imgElement.dataset.failStep = "2";
+                imgElement.src = `https://mineskin.eu/helm/${skinTarget}/${size}`;
+            } else {
+                imgElement.onerror = null;
+                imgElement.src = `https://minotar.net/helm/Mister_Fix/${size}`;
+            }
         }
 
         function switchMode(mode, btn) {
@@ -445,7 +456,7 @@
                         <td>${player.rank}</td>
                         <td onclick="openProfile('${player.name}')">
                             <div class="player-cell">
-                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${skinTarget}', 32)" alt="${player.name}">
+                                <img class="player-head-img" src="${skinUrl}" data-fail-step="0" onerror="handleSkinError(this, '${skinTarget}', 32)" alt="${player.name}">
                                 <span>${player.name}</span>
                             </div>
                         </td>
@@ -504,6 +515,7 @@
 
             const skinTarget = getCrystalSkinName(foundPlayerName, foundPlayerName);
             const modalImg = document.getElementById('profile-skin-img');
+            modalImg.dataset.failStep = "0";
             modalImg.onerror = function() { handleSkinError(this, skinTarget, 64); };
             modalImg.src = getPrimarySkinUrl(skinTarget, 64);
 
