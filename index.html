@@ -332,33 +332,33 @@
     </div>
 
     <script>
-        // MCTiers Crystal Tier skins pool
-        const crystalMCTiersSkins = [
-            "Aydrea", "Tenkiuu", "7Angels_", "69Crispy__", 
-            "Cotoletta38_", "S1nsx", "VetolzHQ", "NoLifeGabbo",
-            "heykALUX", "fwrtuna", "Pqranoiahh", "rips03"
+        // Verified active MCTiers accounts from your screenshot
+        const mcTiersActiveAccounts = [
+            "K1RBE", "mystoganm", "noctyval", "_death0_",
+            "GalleryWalk", "Notpixel", "158XZ", "TenzuX",
+            "ezcan", "Sens_ay", "getreach", "Dirxk_"
         ];
 
-        // Mappings for cracked or specific custom names
-        const crystalCustomSkins = {
-            "wemmbuwasnthere": "Aydrea",
-            "Jollo_YoLo": "Tenkiuu",
-            "Lt2Rabzyberries": "7Angels_",
-            "SLYD_XD": "69Crispy__",
-            "blitzqi": "K1RBE" // Set blitzqi to K1RBE skin
+        // Specific skin accounts assigned for custom/cracked usernames
+        const customPlayerSkins = {
+            "blitzqi": "K1RBE",             // Uses K1RBE skin
+            "Jollo_YoLo": "mystoganm",      // Uses mystoganm skin
+            "Lt2Rabzyberries": "GalleryWalk",// Uses GalleryWalk skin
+            "wemmbuwasnthere": "noctyval",   // Uses noctyval skin
+            "SLYD_XD": "158XZ"             // Uses 158XZ skin
         };
 
-        function getCrystalSkinName(playerName, seedKey) {
-            if (crystalCustomSkins[playerName]) {
-                return crystalCustomSkins[playerName];
+        function getSkinTargetName(playerName, seedKey) {
+            if (customPlayerSkins[playerName]) {
+                return customPlayerSkins[playerName];
             }
             if (playerName === "Nobody") {
                 let hash = 0;
                 for (let i = 0; i < seedKey.length; i++) {
                     hash = seedKey.charCodeAt(i) + ((hash << 5) - hash);
                 }
-                const index = Math.abs(hash) % crystalMCTiersSkins.length;
-                return crystalMCTiersSkins[index];
+                const index = Math.abs(hash) % mcTiersActiveAccounts.length;
+                return mcTiersActiveAccounts[index];
             }
             return playerName;
         }
@@ -380,11 +380,11 @@
                 { rank: "#5", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
             ],
             crystal: [
-                { rank: "#4", name: "Jollo_YoLo", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#1", name: "blitzqi", tier: "HT3", tierClass: "ht3", region: "EU" },
                 { rank: "#2", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
                 { rank: "#3", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
-                { rank: "#4", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
-                { rank: "#1", name: "blitzqi", tier: "HT3", tierClass: "ht3", region: "EU" }
+                { rank: "#4", name: "Jollo_YoLo", tier: "LT4", tierClass: "lt4", region: "EU" },
+                { rank: "#5", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" }
             ],
             axe: [
                 { rank: "#1", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
@@ -414,22 +414,21 @@
         };
 
         function getPrimarySkinUrl(skinTarget, size) {
-            return `https://mc-heads.net/avatar/${skinTarget}/${size}`;
+            return `https://minotar.net/helm/${skinTarget}/${size}`;
         }
 
-        // Multi-level fallback mechanism so skins never render broken
         function handleSkinError(imgElement, skinTarget, size) {
             const step = parseInt(imgElement.dataset.failStep || "0");
             
             if (step === 0) {
                 imgElement.dataset.failStep = "1";
-                imgElement.src = `https://minotar.net/helm/${skinTarget}/${size}`;
+                imgElement.src = `https://mc-heads.net/avatar/${skinTarget}/${size}`;
             } else if (step === 1) {
                 imgElement.dataset.failStep = "2";
                 imgElement.src = `https://mineskin.eu/helm/${skinTarget}/${size}`;
             } else {
                 imgElement.onerror = null;
-                imgElement.src = `https://minotar.net/helm/Mister_Fix/${size}`;
+                imgElement.src = `https://minotar.net/helm/K1RBE/${size}`;
             }
         }
 
@@ -446,10 +445,17 @@
             list.innerHTML = '';
 
             if (rankingsData[mode]) {
-                rankingsData[mode].forEach(player => {
+                // Sort players automatically by numerical rank (#1, #2, #3...)
+                const sortedPlayers = [...rankingsData[mode]].sort((a, b) => {
+                    const numA = parseInt(a.rank.replace('#', '')) || 999;
+                    const numB = parseInt(b.rank.replace('#', '')) || 999;
+                    return numA - numB;
+                });
+
+                sortedPlayers.forEach(player => {
                     const row = document.createElement('tr');
                     const seedKey = mode + player.rank;
-                    const skinTarget = getCrystalSkinName(player.name, seedKey);
+                    const skinTarget = getSkinTargetName(player.name, seedKey);
                     const skinUrl = getPrimarySkinUrl(skinTarget, 32);
 
                     row.innerHTML = `
@@ -513,7 +519,7 @@
             document.getElementById('profile-points').innerText = totalPoints;
             document.getElementById('profile-region').innerText = foundRegion;
 
-            const skinTarget = getCrystalSkinName(foundPlayerName, foundPlayerName);
+            const skinTarget = getSkinTargetName(foundPlayerName, foundPlayerName);
             const modalImg = document.getElementById('profile-skin-img');
             modalImg.dataset.failStep = "0";
             modalImg.onerror = function() { handleSkinError(this, skinTarget, 64); };
