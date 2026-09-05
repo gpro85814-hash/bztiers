@@ -438,4 +438,96 @@
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
                     const seedKey = mode + player.rank;
-                    const skinTarget = getCrystalSkinName(player.name, seedKey
+                    const skinTarget = getCrystalSkinName(player.name, seedKey);
+                    const skinUrl = getPrimarySkinUrl(skinTarget, 32);
+
+                    row.innerHTML = `
+                        <td>${player.rank}</td>
+                        <td onclick="openProfile('${player.name}')">
+                            <div class="player-cell">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${skinTarget}', 32)" alt="${player.name}">
+                                <span>${player.name}</span>
+                            </div>
+                        </td>
+                        <td><span class="tier-badge ${player.tierClass}">${player.tier}</span></td>
+                        <td>${player.region}</td>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+        }
+
+        function searchPlayer() {
+            const query = document.getElementById('player-search').value.trim();
+            if (query) {
+                openProfile(query);
+            }
+        }
+
+        function openProfile(playerName) {
+            if (playerName === "Nobody") return;
+
+            let totalPoints = 0;
+            let playerTiers = {};
+            let foundRegion = "EU";
+            let foundPlayerName = "";
+
+            const modes = Object.keys(rankingsData);
+            modes.forEach(mode => {
+                const match = rankingsData[mode].find(p => p.name.toLowerCase() === playerName.toLowerCase());
+                if (match) {
+                    foundPlayerName = match.name;
+                    foundRegion = match.region;
+                    playerTiers[mode] = { tier: match.tier, tierClass: match.tierClass };
+                    if (tierPoints[match.tier]) {
+                        totalPoints += tierPoints[match.tier];
+                    }
+                } else {
+                    playerTiers[mode] = { tier: "N/A", tierClass: "none" };
+                }
+            });
+
+            if (!foundPlayerName) {
+                foundPlayerName = playerName;
+            }
+
+            let titleRank = "Combat Candidate";
+            if (totalPoints >= 400) titleRank = "Combat Grandmaster";
+            else if (totalPoints >= 250) titleRank = "Combat Master";
+            else if (totalPoints >= 120) titleRank = "Combat Ace";
+            else if (totalPoints >= 50) titleRank = "Combat Specialist";
+
+            document.getElementById('profile-name').innerText = foundPlayerName;
+            document.getElementById('profile-title').innerText = titleRank;
+            document.getElementById('profile-points').innerText = totalPoints;
+            document.getElementById('profile-region').innerText = foundRegion;
+
+            const skinTarget = getCrystalSkinName(foundPlayerName, foundPlayerName);
+            const modalImg = document.getElementById('profile-skin-img');
+            modalImg.onerror = function() { handleSkinError(this, skinTarget, 64); };
+            modalImg.src = getPrimarySkinUrl(skinTarget, 64);
+
+            const grid = document.getElementById('profile-tiers-grid');
+            grid.innerHTML = '';
+            modes.forEach(mode => {
+                grid.innerHTML += `
+                    <div class="mode-box">
+                        <div class="mode-name" style="text-transform: capitalize;">${mode}</div>
+                        <span class="tier-badge ${playerTiers[mode].tierClass}">${playerTiers[mode].tier}</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('profile-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('profile-modal').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchMode('sword');
+        });
+    </script>
+</body>
+</html>
