@@ -157,6 +157,7 @@
             border-radius: 6px;
             background-color: #202225;
             object-fit: contain;
+            image-rendering: pixelated;
         }
 
         .tier-badge {
@@ -253,6 +254,7 @@
             height: 64px;
             border-radius: 8px;
             background: #000;
+            image-rendering: pixelated;
         }
 
         .profile-tiers-grid {
@@ -382,9 +384,17 @@
             ]
         };
 
-        function handleSkinError(imgElement) {
-            imgElement.onerror = null;
-            imgElement.src = fallbackSteveImg;
+        function getSkinUrl(playerName, size) {
+            if (playerName === "Nobody") return fallbackSteveImg;
+            return `https://crafatar.com/avatars/${playerName}?size=${size}&overlay=true`;
+        }
+
+        function handleSkinError(imgElement, playerName, size) {
+            imgElement.onerror = function() {
+                this.onerror = null;
+                this.src = fallbackSteveImg;
+            };
+            this.src = `https://mc-heads.net/avatar/${playerName}/${size}`;
         }
 
         function switchMode(mode, btn) {
@@ -402,16 +412,13 @@
             if (rankingsData[mode]) {
                 rankingsData[mode].forEach(player => {
                     const row = document.createElement('tr');
-                    
-                    const skinUrl = player.name === "Nobody" 
-                        ? fallbackSteveImg 
-                        : `https://mc-heads.net/avatar/${player.name}/32`;
+                    const skinUrl = getSkinUrl(player.name, 32);
 
                     row.innerHTML = `
                         <td>${player.rank}</td>
                         <td onclick="openProfile('${player.name}')">
                             <div class="player-cell">
-                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this)" alt="${player.name}">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${player.name}', 32)" alt="${player.name}">
                                 <span>${player.name}</span>
                             </div>
                         </td>
@@ -469,8 +476,8 @@
             document.getElementById('profile-region').innerText = foundRegion;
 
             const modalImg = document.getElementById('profile-skin-img');
-            modalImg.onerror = function() { handleSkinError(this); };
-            modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
+            modalImg.onerror = function() { handleSkinError(this, foundPlayerName, 64); };
+            modalImg.src = getSkinUrl(foundPlayerName, 64);
 
             const grid = document.getElementById('profile-tiers-grid');
             grid.innerHTML = '';
