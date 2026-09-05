@@ -6,20 +6,13 @@
     <title>BZ-TIERS | Competitive Tier Rankings</title>
     <style>
         :root {
-            --bg-dark: #0a0c10;
-            --card-bg: #12151e;
-            --accent-purple: #5865f2;
-            --accent-hover: #4752c4;
+            --bg-dark: #0d0e12;
+            --card-bg: #151821;
+            --accent-purple: #7289da;
+            --accent-hover: #5b6eae;
             --text-main: #ffffff;
-            --text-muted: #949ba4;
-            --border-color: #1e2230;
-            
-            /* Tier Colors */
-            --tier1-color: #d4af37;
-            --tier2-color: #a0a5b5;
-            --tier3-color: #cd7f32;
-            --tier4-color: #4b6b94;
-            --tier5-color: #5865f2;
+            --text-muted: #8e9297;
+            --border-color: #202225;
         }
 
         body {
@@ -27,7 +20,7 @@
             padding: 0;
             background-color: var(--bg-dark);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -36,12 +29,12 @@
 
         header {
             text-align: center;
-            margin-top: 30px;
-            margin-bottom: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
         header h1 {
-            font-size: 2.8rem;
+            font-size: 3rem;
             margin: 0;
             letter-spacing: 2px;
             background: linear-gradient(90deg, #fff, var(--accent-purple));
@@ -55,7 +48,7 @@
         }
 
         .search-container {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: flex;
             gap: 10px;
         }
@@ -63,20 +56,20 @@
         .search-container input {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
-            padding: 10px 16px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 8px;
             color: white;
-            font-size: 0.95rem;
+            font-size: 1rem;
             outline: none;
-            width: 240px;
+            width: 250px;
         }
 
         .search-container button {
             background-color: var(--accent-purple);
             border: none;
             color: white;
-            padding: 10px 18px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             transition: 0.2s;
@@ -88,12 +81,12 @@
 
         .modes-nav {
             display: flex;
-            gap: 6px;
+            gap: 10px;
             background-color: var(--card-bg);
-            padding: 6px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -102,11 +95,10 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            padding: 8px 14px;
-            border-radius: 5px;
+            padding: 10px 18px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.9rem;
             transition: 0.2s;
         }
 
@@ -119,57 +111,384 @@
             color: white;
         }
 
-        /* 5-Column Tier Board */
-        .tier-board {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-            width: 95%;
-            max-width: 1400px;
+        .table-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
             margin-bottom: 40px;
         }
 
-        @media (max-width: 1100px) {
-            .tier-board {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
         }
 
-        @media (max-width: 600px) {
-            .tier-board {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .tier-column {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .tier-header {
-            padding: 12px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: rgba(255, 255, 255, 0.02);
+        th, td {
+            padding: 15px 20px;
             border-bottom: 1px solid var(--border-color);
         }
 
-        .tier-1 .tier-header { color: var(--tier1-color); background: rgba(212, 175, 55, 0.08); }
-        .tier-2 .tier-header { color: var(--tier2-color); background: rgba(160, 165, 181, 0.08); }
-        .tier-3 .tier-header { color: var(--tier3-color); background: rgba(205, 127, 50, 0.08); }
-        .tier-4 .tier-header { color: var(--tier4-color); background: rgba(75, 107, 148, 0.08); }
-        .tier-5 .tier-header { color: var(--tier5-color); background: rgba(88, 101, 242, 0.08); }
+        th {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
 
-        .player-list {
-            padding: 8px;
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .player-cell {
+            font-weight: bold;
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-head-img {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            background-color: #000;
+            object-fit: contain;
+        }
+
+        .tier-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .ht1 { background-color: #ff4757; color: white; }
+        .lt1 { background-color: #ff6b81; color: white; }
+        .ht2 { background-color: #ffa502; color: white; }
+        .lt2 { background-color: #eccc68; color: black; }
+        .ht3 { background-color: #2ed573; color: white; }
+        .lt3 { background-color: #7bed9f; color: black; }
+        .md3 { background-color: #00d2d3; color: black; }
+        .ht4 { background-color: #1e90ff; color: white; }
+        .lt4 { background-color: #70a1ff; color: white; }
+        .ht5 { background-color: #a55eea; color: white; }
+        .lt5 { background-color: #d1d8e0; color: black; }
+        .none { background-color: #4b6584; color: white; }
+
+        .footer-action {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .btn-discord {
+            display: inline-block;
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.2s;
+        }
+
+        .btn-discord:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .rules-notice {
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .rules-notice span {
+            color: var(--accent-purple);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .profile-header img {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            background: #000;
+        }
+
+        .profile-tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .mode-box {
+            background-color: var(--bg-dark);
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>BZ-TIERS</h1>
+        <p>Competitive Tier Rankings</p>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="player-search" placeholder="Search player name...">
+        <button onclick="searchPlayer()">Search</button>
+    </div>
+
+    <div class="modes-nav">
+        <button class="tab-btn active" onclick="switchMode('sword', this)">Sword</button>
+        <button class="tab-btn" onclick="switchMode('crystal', this)">Crystal</button>
+        <button class="tab-btn" onclick="switchMode('axe', this)">Axe</button>
+        <button class="tab-btn" onclick="switchMode('smp', this)">SMP</button>
+        <button class="tab-btn" onclick="switchMode('uhc', this)">UHC</button>
+        <button class="tab-btn" onclick="switchMode('vanilla', this)">Vanilla</button>
+        <button class="tab-btn" onclick="switchMode('mace', this)">Mace</button>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Tier</th>
+                    <th>Region</th>
+                </tr>
+            </thead>
+            <tbody id="ranking-list">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="footer-action">
+        <a href="https://discord.gg/pQsKCytp2" target="_blank" class="btn-discord">Apply for Tier Testing</a>
+        <p class="rules-notice">After Clicking The Button Make Sure To Read <span>#rules</span></p>
+    </div>
+
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="profile-header">
+                <img id="profile-skin-img" src="" alt="Skin">
+                <div>
+                    <h2 id="profile-name" style="margin:0;">Player</h2>
+                    <p id="profile-title" style="margin:5px 0; color:var(--accent-purple); font-weight:bold;">Title</p>
+                    <p style="margin:0; color:var(--text-muted); font-size:0.9rem;">Total Points: <span id="profile-points" style="color:white; font-weight:bold;">0</span> | Region: <span id="profile-region" style="color:white;">EU</span></p>
+                </div>
+            </div>
+            <div class="profile-tiers-grid" id="profile-tiers-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const fallbackSkins = [
+            "wemmbuwasnthere", "Jollo_YoLo", "Lt2Rabzyberries", "SLYD_XD", "blitzqi"
+        ];
+
+        function getFallbackSkin(name) {
+            let charCodeSum = 0;
+            for (let i = 0; i < name.length; i++) {
+                charCodeSum += name.charCodeAt(i);
+            }
+            return fallbackSkins[charCodeSum % fallbackSkins.length];
+        }
+
+        const tierPoints = {
+            "HT1": 100, "LT1": 80,
+            "HT2": 60,  "LT2": 50,
+            "HT3": 40,  "LT3": 30, "MD3": 35,
+            "HT4": 20,  "LT4": 15,
+            "HT5": 10,  "LT5": 5
+        };
+
+        const rankingsData = {
+            sword: [
+                { rank: "#1", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#2", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#4", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#5", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ],
+            crystal: [
+                { rank: "#1", name: "Jollo_YoLo", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#2", name: "Lt2Rabzyberries", tier: "LT3", tierClass: "lt3", region: "EU" },
+                { rank: "#3", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "SA" },
+                { rank: "#4", name: "SLYD_XD", tier: "LT4", tierClass: "lt4", region: "AS" },
+                { rank: "#5", name: "blitzqi", tier: "HT5", tierClass: "ht5", region: "EU" }
+            ],
+            axe: [
+                { rank: "#1", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#2", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ],
+            smp: [
+                { rank: "#1", name: "wemmbuwasnthere", tier: "MD3", tierClass: "md3", region: "SA" },
+                { rank: "#2", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ],
+            uhc: [
+                { rank: "#1", name: "wemmbuwasnthere", tier: "HT4", tierClass: "ht4", region: "EU" },
+                { rank: "#2", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ],
+            vanilla: [
+                { rank: "#1", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#2", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ],
+            mace: [
+                { rank: "#1", name: "wemmbuwasnthere", tier: "HT3", tierClass: "ht3", region: "EU" },
+                { rank: "#2", name: "Jollo_YoLo", tier: "HT5", tierClass: "ht5", region: "NA" },
+                { rank: "#3", name: "Nobody", tier: "NONE", tierClass: "none", region: "-" }
+            ]
+        };
+
+        function handleSkinError(imgElement, playerName) {
+            const fallbackSkin = getFallbackSkin(playerName);
+            imgElement.onerror = null;
+            imgElement.src = `https://mc-heads.net/avatar/${fallbackSkin}/64`;
+        }
+
+        function switchMode(mode, btn) {
+            if (btn) {
+                const buttons = document.querySelectorAll('.tab-btn');
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+
+            const list = document.getElementById('ranking-list');
+            list.innerHTML = '';
+
+            if (rankingsData[mode]) {
+                rankingsData[mode].forEach(player => {
+                    const row = document.createElement('tr');
+                    
+                    const targetName = player.name === "Nobody" ? getFallbackSkin(player.rank + mode) : player.name;
+                    const skinUrl = `https://mc-heads.net/avatar/${targetName}/32`;
+
+                    row.innerHTML = `
+                        <td>${player.rank}</td>
+                        <td onclick="openProfile('${player.name}')">
+                            <div class="player-cell">
+                                <img class="player-head-img" src="${skinUrl}" onerror="handleSkinError(this, '${targetName}')" alt="${player.name}">
+                                <span>${player.name}</span>
+                            </div>
+                        </td>
+                        <td><span class="tier-badge ${player.tierClass}">${player.tier}</span></td>
+                        <td>${player.region}</td>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+        }
+
+        function searchPlayer() {
+            const query = document.getElementById('player-search').value.trim();
+            if (query) {
+                openProfile(query);
+            }
+        }
+
+        function openProfile(playerName) {
+            if (playerName === "Nobody") return;
+
+            let totalPoints = 0;
+            let playerTiers = {};
+            let foundRegion = "EU";
+            let foundPlayerName = "";
+
+            const modes = Object.keys(rankingsData);
+            modes.forEach(mode => {
+                const match = rankingsData[mode].find(p => p.name.toLowerCase() === playerName.toLowerCase());
+                if (match) {
+                    foundPlayerName = match.name;
+                    foundRegion = match.region;
+                    playerTiers[mode] = { tier: match.tier, tierClass: match.tierClass };
+                    if (tierPoints[match.tier]) {
+                        totalPoints += tierPoints[match.tier];
+                    }
+                } else {
+                    playerTiers[mode] = { tier: "N/A", tierClass: "none" };
+                }
+            });
+
+            if (!foundPlayerName) {
+                foundPlayerName = playerName;
+            }
+
+            let titleRank = "Combat Candidate";
+            if (totalPoints >= 400) titleRank = "Combat Grandmaster";
+            else if (totalPoints >= 250) titleRank = "Combat Master";
+            else if (totalPoints >= 120) titleRank = "Combat Ace";
+            else if (totalPoints >= 50) titleRank = "Combat Specialist";
+
+            document.getElementById('profile-name').innerText = foundPlayerName;
+            document.getElementById('profile-title').innerText = titleRank;
+            document.getElementById('profile-points').innerText = totalPoints;
+            document.getElementById('profile-region').innerText = foundRegion;
+
+            const modalImg = document.getElementById('profile-skin-img');
+            modalImg.onerror = function() { handleSkinError(this, foundPlayerName); };
+            modalImg.src = `https://mc-heads.net/avatar/${foundPlayerName}/64`;
+
+            const grid = document.getElementById('profile-tiers-grid');
+            grid.innerHTML = '';
+            modes.forEach(mode => {
+                grid.innerHTML += `
+                    <div class="mode-box">
+                        <div class="mode-name" style="text-transform: capitalize;">${mode}</div>
+                        <span class="tier-badge ${playerTiers[mode].tierClass}">${playerTiers[mode].tier}</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById
