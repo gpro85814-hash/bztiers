@@ -8,7 +8,6 @@
     <meta name="google-site-verification" content="upGFm1zSKVZaZtltNeR-m5guWsNPTZGVv1SYiNOsKs8" />
 
     <style>
-</head>
         :root {
             --bg-dark: #0d0e12;
             --card-bg: #151821;
@@ -336,20 +335,18 @@
     </div>
 
     <script>
-        // Verified active MCTiers accounts from your screenshot
         const mcTiersActiveAccounts = [
             "K1RBE", "mystoganm", "noctyval", "_death0_",
             "GalleryWalk", "Notpixel", "158XZ", "TenzuX",
             "ezcan", "Sens_ay", "getreach", "Dirxk_"
         ];
 
-        // Specific skin accounts assigned for custom/cracked usernames
         const customPlayerSkins = {
-            "blitzqi": "K1RBE",             // Uses K1RBE skin
-            "Jollo_YoLo": "mystoganm",      // Uses mystoganm skin
-            "Lt2Rabzyberries": "GalleryWalk",// Uses GalleryWalk skin
-            "wemmbuwasnthere": "ItzEggman",   // Uses ItzEggman skin
-            "SLYD_XD": "158XZ"             // Uses 158XZ skin
+            "blitzqi": "K1RBE",
+            "Jollo_YoLo": "mystoganm",
+            "Lt2Rabzyberries": "GalleryWalk",
+            "wemmbuwasnthere": "ItzEggman",
+            "SLYD_XD": "158XZ"
         };
 
         function getSkinTargetName(playerName, seedKey) {
@@ -449,7 +446,6 @@
             list.innerHTML = '';
 
             if (rankingsData[mode]) {
-                // Sort players automatically by numerical rank (#1, #2, #3...)
                 const sortedPlayers = [...rankingsData[mode]].sort((a, b) => {
                     const numA = parseInt(a.rank.replace('#', '')) || 999;
                     const numB = parseInt(b.rank.replace('#', '')) || 999;
